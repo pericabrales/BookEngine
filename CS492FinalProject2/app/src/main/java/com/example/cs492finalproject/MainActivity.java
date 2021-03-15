@@ -33,7 +33,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, BookAdapter.OnSearchResultClickListener {
         private ProgressBar loadingIndicatorPB;
         private static final String TAG = MainActivity.class.getSimpleName();
         private BookAdapter bookAdapter;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             this.searchResultsRV.setLayoutManager(new LinearLayoutManager(this));
             this.searchResultsRV.setHasFixedSize(true);
 
-            this.bookAdapter = new BookAdapter();
+            this.bookAdapter = new BookAdapter(this);
             this.searchResultsRV.setAdapter(bookAdapter);
 
             this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -110,6 +111,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             new BookSearchTask().execute(url);
         }
 
+    @Override
+    public void onSearchResultClicked(BookDataItem book) {
+        Log.d(TAG, "Search result clicked: " + book.title);
+        Intent intent = new Intent(this, BookDetailActivity.class);
+        intent.putExtra(BookDetailActivity.EXTRA_BOOK_DETAIL, book);
+        startActivity(intent);
+    }
+
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if(TextUtils.equals(key, getString(R.string.pref_search_type_key))){
@@ -133,8 +142,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
     }
 
     @Override
