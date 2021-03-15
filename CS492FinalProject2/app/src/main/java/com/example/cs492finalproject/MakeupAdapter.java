@@ -6,12 +6,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItemViewHolder> {
-    private ArrayList<BookDataItem> makeupDataItems;
+    private List<BookDataItem> makeupDataItems;
     private OnMakeupItemClickListener onMakeupItemClickListener;
 
     interface OnMakeupItemClickListener{
@@ -36,7 +37,7 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
         holder.bind(this.makeupDataItems.get(position));
     }
 
-    public void updateMakeupData(ArrayList<BookDataItem> makeupDataItems) {
+    public void updateMakeupData(List<BookDataItem> makeupDataItems) {
         this.makeupDataItems = makeupDataItems;
         notifyDataSetChanged();
     }
