@@ -47,13 +47,15 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
     }
 
     class MakeupItemViewHolder extends RecyclerView.ViewHolder {
-        final private TextView brandTV;
-        final private TextView productnameTV;
+        //final private TextView brandTV;
+        //final private TextView productnameTV;
+        private TextView searchResultTV;
 
         public MakeupItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            brandTV = itemView.findViewById(R.id.tv_brand);
-            productnameTV = itemView.findViewById(R.id.tv_product_name);
+            this.searchResultTV = itemView.findViewById(R.id.tv_search_result);
+            //brandTV = itemView.findViewById(R.id.tv_brand);
+            //productnameTV = itemView.findViewById(R.id.tv_product_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -64,6 +66,7 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
         }
 
         public void bind(MakeupDataItem makeupDataItem) {
+            this.searchResultTV.setText(makeupDataItem.brand);
         }
 
     }
