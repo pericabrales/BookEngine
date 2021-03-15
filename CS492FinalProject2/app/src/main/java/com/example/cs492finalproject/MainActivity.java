@@ -3,6 +3,8 @@ package com.example.cs492finalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import android.content.SharedPreferences;
@@ -29,15 +31,17 @@ import com.example.cs492finalproject.utils.NetworkUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
-
         private ProgressBar loadingIndicatorPB;
         private static final String TAG = MainActivity.class.getSimpleName();
         private BookAdapter bookAdapter;
         private TextView errorMessageTV;
         private RecyclerView searchResultsRV;
         private EditText searchBoxET;
+
+        private BookViewModel bookViewModel;
 
         private SharedPreferences sharedPreferences;
 
@@ -60,13 +64,35 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
+            this.bookViewModel = new ViewModelProvider(this).get(BookViewModel.class);
+            this.bookViewModel.getSearchResults().observe(
+                    this,
+                    new Observer<List<BookDataItem>>() {
+                        @Override
+                        public void onChanged(List<BookDataItem> bookDataItems) {
+                            bookAdapter.updateSearchResults(bookDataItems);
+                        }
+                    }
+            );
+
+            //where loading stuff for view model would go
+
             Button searchButton = (Button)findViewById(R.id.btn_search);
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String searchQuery = searchBoxET.getText().toString();
                     if (!TextUtils.isEmpty(searchQuery)) {
-                        doMakeupSearch(searchQuery);
+                        //TODO: UNCOMMENT THIS TO GET NORMAL SEARCH
+                        //doMakeupSearch(searchQuery);
+
+                        //search type
+                        String searchType = sharedPreferences.getString(
+                                getString(R.string.pref_search_type_key),
+                                getString(R.string.pref_search_type_default)
+                        );
+
+                        bookViewModel.loadSearchResults(searchQuery, searchType);
                     }
                 }
             });
@@ -86,7 +112,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            //need view model for this
+            if(TextUtils.equals(key, getString(R.string.pref_search_type_key))){
+                Log.d(TAG, "shared preference changed, key: " + key + ", value: " + sharedPreferences.getString(key, ""));
+            }
         }
 
         @Override

@@ -5,14 +5,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.SearchResultViewHolder> {
-    private ArrayList<BookDataItem> searchResultsList;
+    private List<BookDataItem> searchResultsList;
 
-    public void updateSearchResults(ArrayList<BookDataItem> searchResultsList) {
+    public void updateSearchResults(List<BookDataItem> searchResultsList) {
         this.searchResultsList = searchResultsList;
         notifyDataSetChanged();
     }
