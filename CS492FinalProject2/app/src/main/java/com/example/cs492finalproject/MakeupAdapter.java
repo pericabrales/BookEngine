@@ -11,11 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItemViewHolder> {
-    private ArrayList<MakeupDataItem> makeupDataItems;
+    private ArrayList<BookDataItem> makeupDataItems;
     private OnMakeupItemClickListener onMakeupItemClickListener;
 
     interface OnMakeupItemClickListener{
-        void onMakeupItemClicked(MakeupDataItem makeup);
+        void onMakeupItemClicked(BookDataItem makeup);
     }
 
     public MakeupAdapter(OnMakeupItemClickListener onMakeupItemClickListener) {
@@ -36,7 +36,7 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
         holder.bind(this.makeupDataItems.get(position));
     }
 
-    public void updateMakeupData(ArrayList<MakeupDataItem> makeupDataItems) {
+    public void updateMakeupData(ArrayList<BookDataItem> makeupDataItems) {
         this.makeupDataItems = makeupDataItems;
         notifyDataSetChanged();
     }
@@ -65,8 +65,8 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
             });
         }
 
-        public void bind(MakeupDataItem makeupDataItem) {
-            this.searchResultTV.setText(makeupDataItem.brand);
+        public void bind(BookDataItem makeupDataItem) {
+//            this.searchResultTV.setText(makeupDataItem.brand);
         }
 
     }

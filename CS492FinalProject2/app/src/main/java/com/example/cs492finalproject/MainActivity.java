@@ -24,18 +24,17 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.cs492finalproject.utils.MakeupUtils;
+import com.example.cs492finalproject.utils.BookUtils;
 import com.example.cs492finalproject.utils.NetworkUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnMakeupItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         private ProgressBar loadingIndicatorPB;
         private static final String TAG = MainActivity.class.getSimpleName();
-        private MakeupAdapter makeupAdapter;
+        private BookAdapter bookAdapter;
         private TextView errorMessageTV;
         private RecyclerView searchResultsRV;
         private EditText searchBoxET;
@@ -55,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
             this.searchResultsRV.setLayoutManager(new LinearLayoutManager(this));
             this.searchResultsRV.setHasFixedSize(true);
 
-            this.makeupAdapter = new MakeupAdapter(this);
-            this.searchResultsRV.setAdapter(makeupAdapter);
+            this.bookAdapter = new BookAdapter();
+            this.searchResultsRV.setAdapter(bookAdapter);
 
             this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
@@ -81,9 +80,8 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
     }
 
     private void doMakeupSearch(String query) {
-            String url = MakeupUtils.buildMakeupSearchURL(query);
-
-            new MakeupSearchTask().execute(url);
+            String url = BookUtils.buildBookSearchURL(query);
+            new BookSearchTask().execute(url);
         }
 
         @Override
@@ -111,7 +109,13 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
 
     }
 
-    public class MakeupSearchTask extends AsyncTask<String, Void, String> {
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    public class BookSearchTask extends AsyncTask<String, Void, String> {
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -138,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
                 loadingIndicatorPB.setVisibility(View.INVISIBLE);
                 if (results != null) {
                     Log.d(TAG, "querying the results: " + results);
-                    ArrayList<MakeupDataItem> searchResultsList = MakeupUtils.parseMakeupSearchResults(results);
-                    makeupAdapter.updateMakeupData(searchResultsList);
+                    ArrayList<BookDataItem> searchResultsList = BookUtils.parseBookSearchResults(results);
+                    bookAdapter.updateSearchResults(searchResultsList);
                     searchResultsRV.setVisibility(View.VISIBLE);
                     errorMessageTV.setVisibility(View.INVISIBLE);
                 } else {
@@ -149,11 +153,5 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
             }
         }
 
-        @Override
-        public void onMakeupItemClicked(MakeupDataItem makeupData) {
-            Intent intent = new Intent(this, MakeupDetailActivity.class);
-            //intent.putExtra(MakeupDetailActivity.DETAILED_WEATHER_FORECAST, makeupData);
-            startActivity(intent);
-        }
 
     }

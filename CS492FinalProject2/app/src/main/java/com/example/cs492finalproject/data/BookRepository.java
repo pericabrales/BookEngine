@@ -3,17 +3,17 @@ package com.example.cs492finalproject.data;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.cs492finalproject.MakeupDataItem;
+import com.example.cs492finalproject.BookDataItem;
 
 import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MakeupRepository {
-    private static final String BASE_URL = "https://makeup.p.rapidapi.com";
+public class BookRepository {
+    private static final String BASE_URL = "https://openlibrary.org/search.json";
 
-    private MutableLiveData<List<MakeupDataItem>> searchResults;
+    private MutableLiveData<List<BookDataItem>> searchResults;
     //loading status could go here
 
     //holds all preferences
@@ -24,7 +24,7 @@ public class MakeupRepository {
 
     private MakeupService makeupService;
 
-    public MakeupRepository(){
+    public BookRepository(){
         this.searchResults = new MutableLiveData<>();
         this.searchResults.setValue(null);
 
@@ -35,7 +35,7 @@ public class MakeupRepository {
         this.makeupService = retrofit.create(MakeupService.class);
     }
 
-    public LiveData<List<MakeupDataItem>> getSearchResults(){
+    public LiveData<List<BookDataItem>> getSearchResults(){
         return this.searchResults;
     }
 
