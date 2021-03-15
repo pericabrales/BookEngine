@@ -6,19 +6,19 @@
 <!-- Strings for list of search types to choose from   -->
     <string name="pref_search_type_key" translatable="false">pref_search_type</string>
     <string name="pref_search_type_title">Search Type</string>
-    <string name="pref_search_type_entry_type">Product Type</string>
-    <string name="pref_search_type_entry_category">Product Category</string>
-    <string name="pref_search_type_entry_tag">Product Tag</string>
-    <string name="pref_search_type_entry_brand">Brand</string>
-    <string name="pref_search_type_default">@string/pref_search_type_entry_type</string>
+    <string name="pref_search_type_entry_general">General Search</string>
+    <string name="pref_search_type_entry_title">Search by Title</string>
+    <string name="pref_search_type_entry_author">Search by Author</string>
+<!--    <string name="pref_search_type_entry_brand">Brand</string>-->
+    <string name="pref_search_type_default">@string/pref_search_type_entry_general</string>
 
 <!-- Strings for price greater than entry   -->
-    <string name="pref_price_greater_key" translatable="false">pref_price_greater</string>
-    <string name="pref_price_greater_title">Price Greater Than</string>
-    <string name="pref_price_greater_default">0</string>
+<!--    <string name="pref_price_greater_key" translatable="false">pref_price_greater</string>-->
+<!--    <string name="pref_price_greater_title">Price Greater Than</string>-->
+<!--    <string name="pref_price_greater_default">0</string>-->
 
 <!-- Strings for price less than entry   -->
-    <string name="pref_price_less_key" translatable="false">pref_price_less</string>
-    <string name="pref_price_less_title">Price Less Than</string>
-    <string name="pref_price_less_default">1000</string>
+<!--    <string name="pref_price_less_key" translatable="false">pref_price_less</string>-->
+<!--    <string name="pref_price_less_title">Price Less Than</string>-->
+<!--    <string name="pref_price_less_default">1000</string>-->
 </resources>
