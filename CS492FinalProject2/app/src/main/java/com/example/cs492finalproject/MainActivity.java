@@ -18,10 +18,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
-public class MainActivity extends AppCompatActivity {
-import com.example.cs492finalproject.MakeupAdapter.utils.NetworkUtils;
-import com.example.cs492finalproject.MakeupAdapter.utils.MakeupUtils;
+import com.example.cs492finalproject.utils.MakeupUtils;
+import com.example.cs492finalproject.utils.NetworkUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,16 +41,16 @@ import java.util.ArrayList;
             RecyclerView makeupListRV = findViewById(R.id.rv_makeup_list);
             makeupListRV.setLayoutManager(new LinearLayoutManager(this));
             makeupListRV.setHasFixedSize(true);
-            this.loadingIndicatorPB = findViewById(R.id.pb_loading_indicator);
-            this.errorMessageTV = findViewById(R.id.tv_error_message);
-
-            this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+//            this.loadingIndicatorPB = findViewById(R.id.pb_loading_indicator);
+//            this.errorMessageTV = findViewById(R.id.tv_error_message);
 
             this.makeupAdapter = new MakeupAdapter(this);
             makeupListRV.setAdapter(makeupAdapter);
 
-            doMakeupSearch(searchQuery);
+            this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+//            doMakeupSearch(searchQuery);
         }
 
         private void doMakeupSearch(String query) {
@@ -64,6 +62,7 @@ import java.util.ArrayList;
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             //need view model for this
         }
+
 
         public class MakeupSearchTask extends AsyncTask<String, Void, String> {
             @Override
@@ -93,8 +92,8 @@ import java.util.ArrayList;
                 if (results != null) {
                     Log.d(TAG, "querying the results: " + results);
                     errorMessageTV.setVisibility(View.INVISIBLE);
-                    ArrayList<ForecastDataItem> searchResultsList = OpenWeatherUtils.parseOpenWeatherSearchResults(results);
-                    forecastAdapter.updateForecastData(searchResultsList);
+                    ArrayList<MakeupDataItem> searchResultsList = MakeupUtils.parseOpenWeatherSearchResults(results);
+                    makeupAdapter.updateForecastData(searchResultsList);
                 } else {
                     errorMessageTV.setVisibility(View.VISIBLE);
                 }
@@ -102,9 +101,9 @@ import java.util.ArrayList;
         }
 
         @Override
-        public void onForecastItemClick(ForecastDataItem forecastData) {
-            Intent intent = new Intent(this, WeatherActivity.class);
-            intent.putExtra(WeatherActivity.DETAILED_WEATHER_FORECAST, forecastData);
+        public void onMakeupItemClicked(MakeupDataItem makeupData) {
+            Intent intent = new Intent(this, MakeupDetailActivity.class);
+            intent.putExtra(MakeupDetailActivity.DETAILED_WEATHER_FORECAST, makeupData);
             startActivity(intent);
         }
 
