@@ -22,7 +22,7 @@ public class BookRepository {
     private String curPriceGreater;
     private String curPriceLess;
 
-    private MakeupService makeupService;
+    private BookService bookService;
 
     public BookRepository(){
         this.searchResults = new MutableLiveData<>();
@@ -32,7 +32,7 @@ public class BookRepository {
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        this.makeupService = retrofit.create(MakeupService.class);
+        this.bookService = retrofit.create(BookService.class);
     }
 
     public LiveData<List<BookDataItem>> getSearchResults(){
