@@ -92,8 +92,8 @@ import java.util.ArrayList;
                 if (results != null) {
                     Log.d(TAG, "querying the results: " + results);
                     errorMessageTV.setVisibility(View.INVISIBLE);
-                    ArrayList<MakeupDataItem> searchResultsList = MakeupUtils.parseOpenWeatherSearchResults(results);
-                    makeupAdapter.updateForecastData(searchResultsList);
+                    ArrayList<MakeupDataItem> searchResultsList = MakeupUtils.parseMakeupSearchResults(results);
+                    makeupAdapter.updateMakeupData(searchResultsList);
                 } else {
                     errorMessageTV.setVisibility(View.VISIBLE);
                 }
@@ -103,9 +103,8 @@ import java.util.ArrayList;
         @Override
         public void onMakeupItemClicked(MakeupDataItem makeupData) {
             Intent intent = new Intent(this, MakeupDetailActivity.class);
-            intent.putExtra(MakeupDetailActivity.DETAILED_WEATHER_FORECAST, makeupData);
+            //intent.putExtra(MakeupDetailActivity.DETAILED_WEATHER_FORECAST, makeupData);
             startActivity(intent);
         }
 
     }
-}
