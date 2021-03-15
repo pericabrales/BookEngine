@@ -48,7 +48,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.SearchResultVi
         }
 
         void bind(BookDataItem searchResult) {
-            this.searchResultTV.setText(searchResult.type);
+            this.searchResultTV.setText(searchResult.title);
         }
     }
 }

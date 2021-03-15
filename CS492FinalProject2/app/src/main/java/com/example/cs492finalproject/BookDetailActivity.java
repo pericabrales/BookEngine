@@ -2,6 +2,6 @@ package com.example.cs492finalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MakeupDetailActivity  extends AppCompatActivity {
+public class BookDetailActivity extends AppCompatActivity {
 
 }

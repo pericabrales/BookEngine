@@ -1,5 +1,6 @@
 package com.example.cs492finalproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.preference.PreferenceManager;
@@ -15,6 +16,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,7 +30,7 @@ import com.example.cs492finalproject.utils.NetworkUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         private ProgressBar loadingIndicatorPB;
         private static final String TAG = MainActivity.class.getSimpleName();
@@ -54,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
             this.bookAdapter = new BookAdapter();
             this.searchResultsRV.setAdapter(bookAdapter);
 
-//            this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//            this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+            this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
             Button searchButton = (Button)findViewById(R.id.btn_search);
             searchButton.setOnClickListener(new View.OnClickListener() {
@@ -69,19 +72,50 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        private void doMakeupSearch(String query) {
-            String url = BookUtils.buildBookSearchURL(query);
 
+    @Override
+    protected void onDestroy() {
+        this.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
+    }
+
+    private void doMakeupSearch(String query) {
+            String url = BookUtils.buildBookSearchURL(query);
             new BookSearchTask().execute(url);
         }
 
-//        @Override
-//        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-//            //need view model for this
-//        }
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            //need view model for this
+        }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu){
+            getMenuInflater().inflate(R.menu.activity_main, menu);
+            return true;
+        }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
 
-        public class BookSearchTask extends AsyncTask<String, Void, String> {
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    public class BookSearchTask extends AsyncTask<String, Void, String> {
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -119,11 +153,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-//        @Override
-//        public void onMakeupItemClicked(BookDataItem makeupData) {
-//            Intent intent = new Intent(this, MakeupDetailActivity.class);
-//            //intent.putExtra(MakeupDetailActivity.DETAILED_WEATHER_FORECAST, makeupData);
-//            startActivity(intent);
-//        }
 
     }

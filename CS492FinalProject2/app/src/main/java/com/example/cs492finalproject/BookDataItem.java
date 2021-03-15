@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class BookDataItem implements Serializable {
-    @SerializedName("type")
-    public String type;
+    @SerializedName("title")
+    public String title;
 }
 

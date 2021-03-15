@@ -13,18 +13,18 @@
         app:useSimpleSummaryProvider="true"
         />
 
-    <EditTextPreference
-        android:title="@string/pref_price_greater_title"
-        android:key="@string/pref_price_greater_key"
-        android:defaultValue="@string/pref_price_greater_default"
-        app:useSimpleSummaryProvider="true"
-        />
+<!--    <EditTextPreference-->
+<!--        android:title="@string/pref_price_greater_title"-->
+<!--        android:key="@string/pref_price_greater_key"-->
+<!--        android:defaultValue="@string/pref_price_greater_default"-->
+<!--        app:useSimpleSummaryProvider="true"-->
+<!--        />-->
 
-    <EditTextPreference
-        android:title="@string/pref_price_less_title"
-        android:key="@string/pref_price_less_key"
-        android:defaultValue="@string/pref_price_less_default"
-        app:useSimpleSummaryProvider="true"
-        />
+<!--    <EditTextPreference-->
+<!--        android:title="@string/pref_price_less_title"-->
+<!--        android:key="@string/pref_price_less_key"-->
+<!--        android:defaultValue="@string/pref_price_less_default"-->
+<!--        app:useSimpleSummaryProvider="true"-->
+<!--        />-->
 
 </PreferenceScreen>
