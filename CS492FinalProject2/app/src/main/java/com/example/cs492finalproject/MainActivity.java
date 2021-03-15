@@ -21,18 +21,17 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.cs492finalproject.utils.MakeupUtils;
+import com.example.cs492finalproject.utils.BookUtils;
 import com.example.cs492finalproject.utils.NetworkUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnMakeupItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity {
 
         private ProgressBar loadingIndicatorPB;
         private static final String TAG = MainActivity.class.getSimpleName();
-        private MakeupAdapter makeupAdapter;
+        private BookAdapter bookAdapter;
         private TextView errorMessageTV;
         private RecyclerView searchResultsRV;
         private EditText searchBoxET;
@@ -52,11 +51,11 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
             this.searchResultsRV.setLayoutManager(new LinearLayoutManager(this));
             this.searchResultsRV.setHasFixedSize(true);
 
-            this.makeupAdapter = new MakeupAdapter(this);
-            this.searchResultsRV.setAdapter(makeupAdapter);
+            this.bookAdapter = new BookAdapter();
+            this.searchResultsRV.setAdapter(bookAdapter);
 
-            this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+//            this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//            this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
             Button searchButton = (Button)findViewById(R.id.btn_search);
             searchButton.setOnClickListener(new View.OnClickListener() {
@@ -71,18 +70,18 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
         }
 
         private void doMakeupSearch(String query) {
-            String url = MakeupUtils.buildMakeupSearchURL(query);
+            String url = BookUtils.buildBookSearchURL(query);
 
-            new MakeupSearchTask().execute(url);
+            new BookSearchTask().execute(url);
         }
 
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            //need view model for this
-        }
+//        @Override
+//        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+//            //need view model for this
+//        }
 
 
-        public class MakeupSearchTask extends AsyncTask<String, Void, String> {
+        public class BookSearchTask extends AsyncTask<String, Void, String> {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -109,8 +108,8 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
                 loadingIndicatorPB.setVisibility(View.INVISIBLE);
                 if (results != null) {
                     Log.d(TAG, "querying the results: " + results);
-                    ArrayList<MakeupDataItem> searchResultsList = MakeupUtils.parseMakeupSearchResults(results);
-                    makeupAdapter.updateMakeupData(searchResultsList);
+                    ArrayList<BookDataItem> searchResultsList = BookUtils.parseBookSearchResults(results);
+                    bookAdapter.updateSearchResults(searchResultsList);
                     searchResultsRV.setVisibility(View.VISIBLE);
                     errorMessageTV.setVisibility(View.INVISIBLE);
                 } else {
@@ -120,11 +119,11 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
             }
         }
 
-        @Override
-        public void onMakeupItemClicked(MakeupDataItem makeupData) {
-            Intent intent = new Intent(this, MakeupDetailActivity.class);
-            //intent.putExtra(MakeupDetailActivity.DETAILED_WEATHER_FORECAST, makeupData);
-            startActivity(intent);
-        }
+//        @Override
+//        public void onMakeupItemClicked(BookDataItem makeupData) {
+//            Intent intent = new Intent(this, MakeupDetailActivity.class);
+//            //intent.putExtra(MakeupDetailActivity.DETAILED_WEATHER_FORECAST, makeupData);
+//            startActivity(intent);
+//        }
 
     }
