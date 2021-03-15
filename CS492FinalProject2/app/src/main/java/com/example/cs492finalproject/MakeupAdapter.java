@@ -54,8 +54,8 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
         public MakeupItemViewHolder(@NonNull View itemView) {
             super(itemView);
             this.searchResultTV = itemView.findViewById(R.id.tv_search_result);
-            //brandTV = itemView.findViewById(R.id.tv_brand);
-            //productnameTV = itemView.findViewById(R.id.tv_product_name);
+//            brandTV = itemView.findViewById(R.id.tv_brand);
+//            productnameTV = itemView.findViewById(R.id.tv_product_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,5 +1,6 @@
 package com.example.cs492finalproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.preference.PreferenceManager;
@@ -15,6 +16,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -70,7 +73,14 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
             });
         }
 
-        private void doMakeupSearch(String query) {
+
+    @Override
+    protected void onDestroy() {
+        this.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
+    }
+
+    private void doMakeupSearch(String query) {
             String url = MakeupUtils.buildMakeupSearchURL(query);
 
             new MakeupSearchTask().execute(url);
@@ -81,8 +91,27 @@ public class MainActivity extends AppCompatActivity implements MakeupAdapter.OnM
             //need view model for this
         }
 
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu){
+            getMenuInflater().inflate(R.menu.activity_main, menu);
+            return true;
+        }
 
-        public class MakeupSearchTask extends AsyncTask<String, Void, String> {
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+
+    public class MakeupSearchTask extends AsyncTask<String, Void, String> {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
