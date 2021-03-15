@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Makeup Engine</string>
+    <string name="app_name">Book Engine</string>
     <string name="loading_error">Unable to execute search.  Please check your internet connection.</string>
     <string name="action_settings_title">Settings</string>
 
