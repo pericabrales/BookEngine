@@ -14,7 +14,11 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
     private ArrayList<MakeupDataItem> makeupDataItems;
     private OnMakeupItemClickListener onMakeupItemClickListener;
 
-    public MakeeupAdapter(OnMakeupItemClickListener onMakeupItemClickListener) {
+    interface OnMakeupItemClickListener{
+        void onMakeupItemClicked(MakeupDataItem makeup);
+    }
+
+    public MakeupAdapter(OnMakeupItemClickListener onMakeupItemClickListener) {
         this.makeupDataItems = new ArrayList<>();
         this.onMakeupItemClickListener = onMakeupItemClickListener;
     }
@@ -50,7 +54,7 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onMakeupItemClickListener.onMakeupItemClick(makeupDataItems.get(getAdapterPosition()));
+                    onMakeupItemClickListener.onMakeupItemClicked(makeupDataItems.get(getAdapterPosition()));
                 }
             });
         }
