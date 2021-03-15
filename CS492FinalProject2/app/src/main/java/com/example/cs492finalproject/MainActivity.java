@@ -12,9 +12,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
-import com.example.cs492finalproject.MakeupAdapter.utils.NetworkUtils;
-import com.example.cs492finalproject.MakeupAdapter.utils.MakeupUtils;
+import com.example.cs492finalproject.utils.NetworkUtils;
+import com.example.cs492finalproject.utils.MakeupUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +40,7 @@ import java.util.ArrayList;
             this.makeupAdapter = new MakeupAdapter(this);
             makeupListRV.setAdapter(makeupAdapter);
 
+            String searchQuery = "Covergirl";
             doMakeupSearch(searchQuery);
         }
 
@@ -77,8 +77,8 @@ import java.util.ArrayList;
                 if (results != null) {
                     Log.d(TAG, "querying the results: " + results);
                     errorMessageTV.setVisibility(View.INVISIBLE);
-                    ArrayList<ForecastDataItem> searchResultsList = OpenWeatherUtils.parseOpenWeatherSearchResults(results);
-                    forecastAdapter.updateForecastData(searchResultsList);
+                    ArrayList<MakeupDataItem> searchResultsList = MakeupUtils.parseMakeupSearchResults(results);
+                    makeupAdapter.updateMakeupData(searchResultsList);
                 } else {
                     errorMessageTV.setVisibility(View.VISIBLE);
                 }
@@ -86,10 +86,7 @@ import java.util.ArrayList;
         }
 
         @Override
-        public void onForecastItemClick(ForecastDataItem forecastData) {
-            Intent intent = new Intent(this, WeatherActivity.class);
-            intent.putExtra(WeatherActivity.DETAILED_WEATHER_FORECAST, forecastData);
-            startActivity(intent);
+        public void onMakeupItemClick(MakeupDataItem makeupData) {
+
         }
     }
-}

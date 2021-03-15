@@ -14,7 +14,11 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
     private ArrayList<MakeupDataItem> makeupDataItems;
     private OnMakeupItemClickListener onMakeupItemClickListener;
 
-    public MakeeupAdapter(OnMakeupItemClickListener onMakeupItemClickListener) {
+    public interface OnMakeupItemClickListener {
+        void onMakeupItemClick(MakeupDataItem makeupDataItem);
+    }
+
+    public MakeupAdapter(OnMakeupItemClickListener onMakeupItemClickListener) {
         this.makeupDataItems = new ArrayList<>();
         this.onMakeupItemClickListener = onMakeupItemClickListener;
     }
@@ -43,9 +47,13 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
     }
 
     class MakeupItemViewHolder extends RecyclerView.ViewHolder {
+        final private TextView brandTV;
+        final private TextView productnameTV;
 
         public MakeupItemViewHolder(@NonNull View itemView) {
             super(itemView);
+            brandTV = itemView.findViewById(R.id.tv_brand);
+            productnameTV = itemView.findViewById(R.id.tv_product_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -56,6 +64,8 @@ public class MakeupAdapter extends RecyclerView.Adapter<MakeupAdapter.MakeupItem
         }
 
         public void bind(MakeupDataItem makeupDataItem) {
+            this.brandTV.setText(makeupDataItem.brand);
+            this.productnameTV.setText(makeupDataItem.product_name);
         }
 
     }
