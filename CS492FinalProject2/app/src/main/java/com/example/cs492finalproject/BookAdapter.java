@@ -41,14 +41,22 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.SearchResultVi
 
     class SearchResultViewHolder extends RecyclerView.ViewHolder {
         private TextView searchResultTV;
+        private TextView authorTV;
 
         SearchResultViewHolder(View itemView) {
             super(itemView);
             this.searchResultTV = itemView.findViewById(R.id.tv_search_result);
+            this.authorTV = itemView.findViewById(R.id.tv_author_result);
         }
 
         void bind(BookDataItem searchResult) {
-            this.searchResultTV.setText(searchResult.type);
+            this.searchResultTV.setText(searchResult.title);
+            if(searchResult.auth != null) {
+                this.authorTV.setText("Author: " + searchResult.auth.get(0));
+            }
+            else{
+                this.authorTV.setText("No Author Specified");
+            }
         }
     }
 }
