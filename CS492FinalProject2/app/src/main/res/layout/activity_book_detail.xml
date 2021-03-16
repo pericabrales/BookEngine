@@ -28,8 +28,8 @@
         android:textAppearance="?attr/textAppearanceBody1"/>
 
     <ImageView
-        android:layout_width="500dp"
-        android:layout_height="500dp"
+        android:layout_width="450dp"
+        android:layout_height="450dp"
         android:padding="10dp"
         android:src="@drawable/icon_book"
         android:layout_gravity="center"/>
