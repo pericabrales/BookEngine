@@ -42,11 +42,41 @@ public class BookDetailActivity extends AppCompatActivity {
             TextView bookDateTV = findViewById(R.id.tv_book_date);
 
             bookNameTV.setText(book.title);
-            bookAuthorTV.setText("Author: " + book.auth.get(0));
-            bookPublishTV.setText("Publisher: " + book.publisher.get(0));
-            bookSubjectTV.setText("Subject: " + book.subject.get(0));
-            bookLanguageTV.setText("Language: " + book.language.get(0));
-            bookDateTV.setText("Published in " + book.publishDate.get(0));
+            if(book.auth != null){
+                bookAuthorTV.setText("Author: " + book.auth.get(0));
+
+            }
+            else{
+                bookAuthorTV.setText("Author Not Specified");
+            }
+            if(book.publisher != null){
+                bookPublishTV.setText("Publisher: " + book.publisher.get(0));
+
+            }
+            else{
+                bookPublishTV.setText("Publisher Not Specified");
+            }
+            if(book.subject != null){
+                bookSubjectTV.setText("Subject: " + book.subject.get(0));
+
+            }
+            else{
+                bookSubjectTV.setText("Subject Not Specified");
+            }
+            if(book.language != null){
+                bookLanguageTV.setText("Language: " + book.language.get(0));
+
+            }
+            else{
+                bookLanguageTV.setText("Language Not Specified");
+            }
+            if(book.publishDate != null){
+                bookDateTV.setText("Published in " + book.publishDate.get(0));
+            }
+            else{
+                bookPublishTV.setText("Publish Date Not Specified");
+            }
+
         }
     }
 
