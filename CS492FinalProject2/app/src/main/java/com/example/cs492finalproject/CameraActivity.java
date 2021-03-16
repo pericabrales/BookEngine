@@ -67,6 +67,7 @@ public class CameraActivity extends AppCompatActivity {
 
             // Set the image in imageview for display
             click_image_id.setImageBitmap(photo);
+            MediaStore.Images.Media.insertImage(getContentResolver(), photo, "photo" , "photo");
         }
     }
 }
