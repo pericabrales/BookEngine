@@ -8,23 +8,40 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@color/back">
 
-        <TextView
-            android:id="@+id/tv_search_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:textAppearance="?attr/textAppearanceHeadline5"/>
-
-        <TextView
-            android:id="@+id/tv_author_result"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="70dp"
-            android:layout_marginTop="15dp"
-            android:textSize="15sp"
-            android:textAppearance="?attr/textAppearanceHeadline5"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/math_bg">
+
+            <TextView
+                android:id="@+id/tv_search_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceHeadline5"/>
+
+            <TextView
+                android:id="@+id/tv_author_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceHeadline5"/>
+
+        </LinearLayout>
+
+
+
+
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

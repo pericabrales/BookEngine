@@ -12,4 +12,9 @@
     <color name="app_background">#FFFFFFFF</color>
     <color name="search_color">#f09462</color>
     <color name="search_color2">#e8641c</color>
+    <color name="gradient1">#ffcccb</color>
+    <color name="gradient2">#ba6b6c</color>
+    <color name="back">#560027</color>
+    <color name="mainback">#f3e5f5</color>
+
 </resources>
