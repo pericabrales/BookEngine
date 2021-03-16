@@ -20,7 +20,7 @@
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity">
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
             android:launchMode="singleTop"> <!-- singleTop recognizes if there is an instance of the activity already running, then it will use that instance and not make a new one -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
