@@ -13,6 +13,7 @@
 
 <!--text for share intent    -->
     <string name="share_book_text">Check out this book I found: %1$s by %2$s</string>
+    <string name="action_twitter">Take a picture of your favorite book and click the share icon above to share it on Twitter!</string>
 
     <string name="nav_search">Search</string>
     <string name="nav_bookmarked_repos">Your Reading List</string>
@@ -28,14 +29,4 @@
     <string name="pref_search_type_entry_author">Search by Author</string>
 <!--    <string name="pref_search_type_entry_brand">Brand</string>-->
     <string name="pref_search_type_default">@string/pref_search_type_entry_general</string>
-
-<!-- Strings for price greater than entry   -->
-<!--    <string name="pref_price_greater_key" translatable="false">pref_price_greater</string>-->
-<!--    <string name="pref_price_greater_title">Price Greater Than</string>-->
-<!--    <string name="pref_price_greater_default">0</string>-->
-
-<!-- Strings for price less than entry   -->
-<!--    <string name="pref_price_less_key" translatable="false">pref_price_less</string>-->
-<!--    <string name="pref_price_less_title">Price Less Than</string>-->
-<!--    <string name="pref_price_less_default">1000</string>-->
 </resources>

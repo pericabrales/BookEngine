@@ -8,6 +8,17 @@
     android:padding="8dp"
     tools:context=".CameraActivity">
 
+    <TextView
+        android:id="@+id/tv_twitter_string"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/action_twitter"
+        android:textStyle="bold"
+        android:padding="16dp"
+        android:textColor="@color/gradient1"
+        android:textSize="20dp" />
+
     <Button
         android:id="@+id/camera_button"
         android:layout_width="100dp"
