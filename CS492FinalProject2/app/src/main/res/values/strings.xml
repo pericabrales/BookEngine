@@ -3,10 +3,12 @@
     <string name="loading_error">Unable to execute search.  Please check your internet connection.</string>
     <string name="search_action_error">The search could not be completed. Please check your search and try again</string>
 
+
 <!-- titles for all intents   -->
     <string name="action_settings_title">Settings</string>
     <string name="action_camera_title">Camera</string>
     <string name="action_share_title">Share</string>
+    <string name="action_pic_share_title">Share Picture on Twitter</string>
     <string name="action_view_web_search_title">Search Book Online</string>
 
 <!--text for share intent    -->
