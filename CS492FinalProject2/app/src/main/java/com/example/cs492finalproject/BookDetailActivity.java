@@ -2,6 +2,8 @@ package com.example.cs492finalproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -21,6 +23,8 @@ public class BookDetailActivity extends AppCompatActivity {
     private static final String TAG = BookDetailActivity.class.getSimpleName();
 
     private Toast errorToast;
+    private ReadingListViewModel viewModel;
+    private boolean isBookmarked;
 
     private BookDataItem book;
 
@@ -28,6 +32,12 @@ public class BookDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
+
+        this.isBookmarked = false;
+        this.viewModel = new ViewModelProvider(
+                this,
+                new ViewModelProvider.AndroidViewModelFactory(getApplication())
+        ).get(ReadingListViewModel.class);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_BOOK_DETAIL)) {
@@ -83,7 +93,48 @@ public class BookDetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.book_detail, menu);
+        this.viewModel.getAllReadingListByName(this.book.title).observe(
+                this,
+                new Observer<BookDataItem>() {
+                    @Override
+                    public void onChanged(BookDataItem repo) {
+                        MenuItem menuItem = menu.findItem(R.id.action_bookmark);
+                        if (repo == null) {
+                            isBookmarked = false;
+                            menuItem.setIcon(R.drawable.ic_reading_list_border);
+                        } else {
+                            isBookmarked = true;
+                            menuItem.setIcon(R.drawable.ic_reading_list_checked);
+                        }
+                    }
+                }
+        );
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_bookmark:
+                toggleRepoBookmark(item);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void toggleRepoBookmark(MenuItem menuItem) {
+        if (this.book != null) {
+            this.isBookmarked = !this.isBookmarked;
+            menuItem.setChecked(this.isBookmarked);
+            if (this.isBookmarked) {
+                menuItem.setIcon(R.drawable.ic_reading_list_checked);
+                this.viewModel.insertReadingList(this.book);
+            } else {
+                menuItem.setIcon(R.drawable.ic_reading_list_border);
+                this.viewModel.deleteReadingList(this.book);
+            }
+        }
     }
 
     /*private void shareRepo() {

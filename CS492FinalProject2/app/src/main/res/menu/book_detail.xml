@@ -2,4 +2,10 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_bookmark"
+        android:title="@string/action_bookmark"
+        android:icon="@drawable/ic_reading_list_border"
+        android:checkable="true"
+        app:showAsAction="ifRoom"/>
 </menu>
