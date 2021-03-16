@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">Book Engine</string>
     <string name="loading_error">Unable to execute search.  Please check your internet connection.</string>
+    <string name="search_action_error">The search could not be completed. Please check your search and try again</string>
+
+<!-- titles for all intents   -->
     <string name="action_settings_title">Settings</string>
+    <string name="action_share_title">Share</string>
+    <string name="action_view_web_search_title">Search Book Online</string>
+
+<!--text for share intent    -->
+    <string name="share_book_text">Check out this book I found: %1$s by %2$s</string>
 
     <string name="nav_search">Search</string>
     <string name="nav_bookmarked_repos">Your Reading List</string>

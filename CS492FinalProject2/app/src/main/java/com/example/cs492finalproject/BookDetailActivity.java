@@ -2,11 +2,17 @@ package com.example.cs492finalproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +23,7 @@ import android.widget.Toast;
 
 import com.example.cs492finalproject.BookDataItem;
 
-public class BookDetailActivity extends AppCompatActivity {
+public class BookDetailActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
     public static final String EXTRA_BOOK_DETAIL = "BookDataItem";
 
     private static final String TAG = BookDetailActivity.class.getSimpleName();
@@ -27,6 +33,8 @@ public class BookDetailActivity extends AppCompatActivity {
     private boolean isBookmarked;
 
     private BookDataItem book;
+
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,9 @@ public class BookDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_BOOK_DETAIL)) {
+            this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
             this.book = (BookDataItem) intent.getSerializableExtra(EXTRA_BOOK_DETAIL);
             Log.d(TAG, "Got repo with name: " + book.title);
 
@@ -114,12 +125,39 @@ public class BookDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
+        switch(item.getItemId()){
+            case R.id.action_share:
+                Log.d(TAG, "action share");
+                shareBook();
+                return true;
+            case R.id.action_search_web:
+                searchBook();
+                return true;
             case R.id.action_bookmark:
                 toggleRepoBookmark(item);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+    //intent for sharing to others
+    private void shareBook() {
+        Log.d(TAG, "in shareBook");
+        if (this.book != null) {
+            String shareText = getString(
+                    R.string.share_book_text,
+                    this.book.title,
+                    this.book.auth.get(0)
+            );
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT, shareText);
+            intent.setType("text/plain");
+
+            Intent chooserIntent = Intent.createChooser(intent, null);
+            startActivity(chooserIntent);
         }
     }
 
@@ -137,19 +175,52 @@ public class BookDetailActivity extends AppCompatActivity {
         }
     }
 
-    /*private void shareRepo() {
-        if (this.book != null) {
-            String shareText = getString(
-                    R.string.share_repo_text,
-                    this.repo.fullName,
-                    this.repo.htmlUrl
-            );
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_TEXT, shareText);
-            intent.setType("text/plain");
 
-            Intent chooserIntent = Intent.createChooser(intent, null);
-            startActivity(chooserIntent);
+    //intent for google searching
+    private void searchBook(){
+        if(this.book != null){
+            //String query = this.book.title + " by " + this.book.auth.get(0);
+            //String baseUrl = "http://google.com/search?q=" + query;
+            String query = "";
+            String searchType = sharedPreferences.getString(
+                    getString(R.string.pref_search_type_key),
+                    getString(R.string.pref_search_type_default)
+            );
+            if(searchType.equals("")){
+                query = this.book.title + " " + this.book.auth.get(0) + " " + this.book.publisher.get(0);
+            }
+            else{
+                query = this.book.title + " " + this.book.auth.get(0);
+            }
+
+            //String query = this.book.title + " " + this.book.auth.get(0) + " " + this.book.publisher.get(0);
+            Log.d(TAG, "query for url is " + query);
+            String baseUrl = "http://amazon.com/s?k=" + query + "&ref=nb_sb_noss";
+            Log.d(TAG, "full url is " + baseUrl);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(baseUrl));
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setPackage("com.android.chrome");
+
+            try{
+                startActivity(intent);
+            }catch(ActivityNotFoundException e){
+                if(this.errorToast != null){
+                    this.errorToast.cancel();
+                }
+                this.errorToast = Toast.makeText(
+                        this,
+                        getString(R.string.search_action_error),
+                        Toast.LENGTH_LONG
+                );
+                this.errorToast.show();
+            }
         }
-    }*/
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+    }
 }
