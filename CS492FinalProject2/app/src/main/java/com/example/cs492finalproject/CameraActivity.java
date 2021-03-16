@@ -1,13 +1,21 @@
 package com.example.cs492finalproject;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CameraActivity extends AppCompatActivity {
@@ -17,6 +25,7 @@ public class CameraActivity extends AppCompatActivity {
     // Define the button and imageview type variable
     Button camera_open_id;
     ImageView click_image_id;
+    private Toast errorToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -69,7 +78,46 @@ public class CameraActivity extends AppCompatActivity {
             click_image_id.setImageBitmap(photo);
             MediaStore.Images.Media.insertImage(getContentResolver(), photo, "photo" , "photo");
         }
-
-
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.camera_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_pic_share:
+                sharePic();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void sharePic(){
+        String baseUrl = "http://mobile.twitter.com";
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(baseUrl));
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setPackage("com.android.chrome");
+
+        try{
+            startActivity(intent);
+        }catch(ActivityNotFoundException e){
+            if(this.errorToast != null){
+                this.errorToast.cancel();
+            }
+            this.errorToast = Toast.makeText(
+                    this,
+                    getString(R.string.search_action_error),
+                    Toast.LENGTH_LONG
+            );
+            this.errorToast.show();
+        }
+    }
+
 }
