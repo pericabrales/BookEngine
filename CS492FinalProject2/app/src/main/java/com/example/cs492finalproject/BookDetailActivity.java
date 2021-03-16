@@ -124,12 +124,6 @@ public class BookDetailActivity extends AppCompatActivity implements SharedPrefe
         return true;
     }
 
-    public void sendWebSearch(View view){
-        Intent intent = new Intent(this, WebActivity.class);
-        intent.putExtra(WebActivity.EXTRA_WEB_INFO, book);
-        startActivity(intent);
-    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
