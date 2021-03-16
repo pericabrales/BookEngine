@@ -48,19 +48,30 @@ public class BookDetailActivity extends AppCompatActivity {
         return true;
     }
 
-    /*private void shareRepo() {
-        if (this.book != null) {
-            String shareText = getString(
-                    R.string.share_repo_text,
-                    this.repo.fullName,
-                    this.repo.htmlUrl
-            );
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_TEXT, shareText);
-            intent.setType("text/plain");
-
-            Intent chooserIntent = Intent.createChooser(intent, null);
-            startActivity(chooserIntent);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_share:
+                shareBook();
+            default:
+                return super.onOptionsItemSelected(item);
         }
-    }*/
+    }
+
+
+//    private void shareBook() {
+//        if (this.book != null) {
+//            String shareText = getString(
+//                    R.string.share_repo_text,
+//                    this.repo.fullName,
+//                    this.repo.htmlUrl
+//            );
+//            Intent intent = new Intent(Intent.ACTION_SEND);
+//            intent.putExtra(Intent.EXTRA_TEXT, shareText);
+//            intent.setType("text/plain");
+//
+//            Intent chooserIntent = Intent.createChooser(intent, null);
+//            startActivity(chooserIntent);
+//        }
+//    }
 }
