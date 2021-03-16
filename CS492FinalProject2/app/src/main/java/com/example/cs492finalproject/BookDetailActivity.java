@@ -2,9 +2,13 @@ package com.example.cs492finalproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
+import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.cs492finalproject.BookDataItem;
 
-public class BookDetailActivity extends AppCompatActivity {
+public class BookDetailActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
     public static final String EXTRA_BOOK_DETAIL = "BookDataItem";
 
     private static final String TAG = BookDetailActivity.class.getSimpleName();
@@ -24,6 +28,8 @@ public class BookDetailActivity extends AppCompatActivity {
 
     private BookDataItem book;
 
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +37,9 @@ public class BookDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_BOOK_DETAIL)) {
+            this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
             this.book = (BookDataItem) intent.getSerializableExtra(EXTRA_BOOK_DETAIL);
             Log.d(TAG, "Got repo with name: " + book.title);
 
@@ -91,6 +100,8 @@ public class BookDetailActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_share:
                 shareBook();
+            case R.id.action_search_web:
+                searchBook();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -112,5 +123,53 @@ public class BookDetailActivity extends AppCompatActivity {
             Intent chooserIntent = Intent.createChooser(intent, null);
             startActivity(chooserIntent);
         }
+    }
+
+    //intent for google searching
+    private void searchBook(){
+        if(this.book != null){
+            //String query = this.book.title + " by " + this.book.auth.get(0);
+            //String baseUrl = "http://google.com/search?q=" + query;
+            String query = "";
+            String searchType = sharedPreferences.getString(
+                    getString(R.string.pref_search_type_key),
+                    getString(R.string.pref_search_type_default)
+            );
+            if(searchType.equals("")){
+                query = this.book.title + " " + this.book.auth.get(0) + " " + this.book.publisher.get(0);
+            }
+            else{
+                query = this.book.title + " " + this.book.auth.get(0);
+            }
+
+            //String query = this.book.title + " " + this.book.auth.get(0) + " " + this.book.publisher.get(0);
+            Log.d(TAG, "query for url is " + query);
+            String baseUrl = "http://amazon.com/s?k=" + query + "&ref=nb_sb_noss";
+            Log.d(TAG, "full url is " + baseUrl);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(baseUrl));
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setPackage("com.android.chrome");
+
+            try{
+                startActivity(intent);
+            }catch(ActivityNotFoundException e){
+                if(this.errorToast != null){
+                    this.errorToast.cancel();
+                }
+                this.errorToast = Toast.makeText(
+                        this,
+                        getString(R.string.search_action_error),
+                        Toast.LENGTH_LONG
+                );
+                this.errorToast.show();
+            }
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
     }
 }
