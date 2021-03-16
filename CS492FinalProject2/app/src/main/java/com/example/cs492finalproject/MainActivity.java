@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.cs492finalproject.data.LoadingStatus;
 import com.example.cs492finalproject.utils.BookUtils;
 import com.example.cs492finalproject.utils.NetworkUtils;
 
@@ -35,12 +36,15 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, BookAdapter.OnSearchResultClickListener {
-        private ProgressBar loadingIndicatorPB;
+
         private static final String TAG = MainActivity.class.getSimpleName();
+
         private BookAdapter bookAdapter;
         private TextView errorMessageTV;
         private RecyclerView searchResultsRV;
         private EditText searchBoxET;
+
+        private ProgressBar loadingIndicatorPB;
 
         private BookViewModel bookViewModel;
 
@@ -76,7 +80,27 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     }
             );
 
-            //where loading stuff for view model would go
+            this.bookViewModel.getLoadingStatus().observe(
+                    this,
+                    new Observer<LoadingStatus>() {
+                        @Override
+                        public void onChanged(LoadingStatus loadingStatus) {
+                            if(loadingStatus == LoadingStatus.LOADING){
+                                loadingIndicatorPB.setVisibility(View.VISIBLE);
+                            }
+                            else if(loadingStatus == LoadingStatus.SUCCESS){
+                                loadingIndicatorPB.setVisibility(View.INVISIBLE);
+                                searchResultsRV.setVisibility(View.VISIBLE);
+                                errorMessageTV.setVisibility(View.INVISIBLE);
+                            }
+                            else{
+                                loadingIndicatorPB.setVisibility(View.INVISIBLE);
+                                searchResultsRV.setVisibility(View.INVISIBLE);
+                                errorMessageTV.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+            );
 
             Button searchButton = (Button)findViewById(R.id.btn_search);
             searchButton.setOnClickListener(new View.OnClickListener() {
@@ -144,10 +168,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 
     public class BookSearchTask extends AsyncTask<String, Void, String> {
 
