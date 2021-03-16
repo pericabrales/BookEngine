@@ -1,13 +1,18 @@
 package com.example.cs492finalproject;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import android.content.SharedPreferences;
+import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.navigation.NavigationView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, BookAdapter.OnSearchResultClickListener {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, BookAdapter.OnSearchResultClickListener, NavigationView.OnNavigationItemSelectedListener {
 
         private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -45,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         private EditText searchBoxET;
 
         private ProgressBar loadingIndicatorPB;
+        private DrawerLayout drawerLayout;
 
         private BookViewModel bookViewModel;
 
@@ -59,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             this.searchResultsRV = findViewById(R.id.rv_search_results);
             this.loadingIndicatorPB = findViewById(R.id.pb_loading_indicator);
             this.errorMessageTV = findViewById(R.id.tv_error_message);
+            this.drawerLayout = findViewById(R.id.drawer_layout);
 
             this.searchResultsRV.setLayoutManager(new LinearLayoutManager(this));
             this.searchResultsRV.setHasFixedSize(true);
@@ -102,6 +109,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     }
             );
 
+            NavigationView navigationView = findViewById(R.id.nv_nav_drawer);
+            navigationView.setNavigationItemSelectedListener(this);
+
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
             Button searchButton = (Button)findViewById(R.id.btn_search);
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -143,6 +160,24 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         startActivity(intent);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        this.drawerLayout.closeDrawers();
+        switch (item.getItemId()) {
+            case R.id.nav_search:
+                return true;
+            case R.id.nav_bookmarked_repos:
+                Intent readingListIntent = new Intent(this, ReadingList.class);
+                startActivity(readingListIntent);
+                return true;
+            case R.id.nav_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            default:
+                return false;
+        }
+    }
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if(TextUtils.equals(key, getString(R.string.pref_search_type_key))){
@@ -163,6 +198,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
+            case android.R.id.home:
+                this.drawerLayout.openDrawer(GravityCompat.START);
             default:
                 return super.onOptionsItemSelected(item);
         }
