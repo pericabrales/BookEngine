@@ -24,7 +24,7 @@ public class BookRepository {
     private static final String BASE_URL = "https://openlibrary.org/search.json/";
 
     private MutableLiveData<List<BookDataItem>> searchResults;
-    //loading status could go here
+    private MutableLiveData<LoadingStatus> loadingStatus;
 
     //holds all preferences
     private String curQuery;
@@ -35,6 +35,9 @@ public class BookRepository {
     public BookRepository(){
         this.searchResults = new MutableLiveData<>();
         this.searchResults.setValue(null);
+
+        this.loadingStatus = new MutableLiveData<>();
+        this.loadingStatus.setValue(LoadingStatus.SUCCESS);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -47,9 +50,14 @@ public class BookRepository {
         return this.searchResults;
     }
 
+    public LiveData<LoadingStatus> getLoadingStatus(){
+        return this.loadingStatus;
+    }
+
     private boolean shouldExecuteSearch(String query, String searchType){
         return !TextUtils.equals(query, this.curQuery)
-                || !TextUtils.equals(searchType, this.curSearchType);
+                || !TextUtils.equals(searchType, this.curSearchType)
+                || this.getLoadingStatus().getValue() == LoadingStatus.ERROR;
     }
 
     public void loadSearchResults(String query, String searchType){
@@ -64,6 +72,9 @@ public class BookRepository {
             else{
                 this.executeSearch(query, searchType);
             }
+        }
+        else{
+            Log.d(TAG, "using cached search results for this query: " + query);
         }
     }
 
@@ -87,21 +98,24 @@ public class BookRepository {
         }
 
         this.searchResults.setValue(null);
+        this.loadingStatus.setValue(LoadingStatus.LOADING);
 
         response.enqueue(new Callback<BookResponse>() {
             @Override
             public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
                 if(response.code() == 200){
                     searchResults.setValue(response.body().bookList);
+                    loadingStatus.setValue(LoadingStatus.SUCCESS);
                 }
                 else{
-                    //loading status can go here
+                    loadingStatus.setValue(LoadingStatus.ERROR);
                 }
             }
 
             @Override
             public void onFailure(Call<BookResponse> call, Throwable t) {
                 t.printStackTrace();
+                loadingStatus.setValue(LoadingStatus.ERROR);
             }
         });
     }
