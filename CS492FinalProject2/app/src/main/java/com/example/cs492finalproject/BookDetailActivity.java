@@ -67,19 +67,20 @@ public class BookDetailActivity extends AppCompatActivity {
     }
 
 
-//    private void shareBook() {
-//        if (this.book != null) {
-//            String shareText = getString(
-//                    R.string.share_repo_text,
-//                    this.repo.fullName,
-//                    this.repo.htmlUrl
-//            );
-//            Intent intent = new Intent(Intent.ACTION_SEND);
-//            intent.putExtra(Intent.EXTRA_TEXT, shareText);
-//            intent.setType("text/plain");
-//
-//            Intent chooserIntent = Intent.createChooser(intent, null);
-//            startActivity(chooserIntent);
-//        }
-//    }
+    //intent for sharing to others
+    private void shareBook() {
+        if (this.book != null) {
+            String shareText = getString(
+                    R.string.share_book_text,
+                    this.book.title,
+                    this.book.auth.get(0)
+            );
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT, shareText);
+            intent.setType("text/plain");
+
+            Intent chooserIntent = Intent.createChooser(intent, null);
+            startActivity(chooserIntent);
+        }
+    }
 }
