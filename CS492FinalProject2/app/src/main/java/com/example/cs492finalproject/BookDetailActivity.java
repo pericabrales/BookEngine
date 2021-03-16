@@ -2,8 +2,12 @@ package com.example.cs492finalproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
@@ -25,6 +29,8 @@ public class BookDetailActivity extends AppCompatActivity implements SharedPrefe
     private static final String TAG = BookDetailActivity.class.getSimpleName();
 
     private Toast errorToast;
+    private ReadingListViewModel viewModel;
+    private boolean isBookmarked;
 
     private BookDataItem book;
 
@@ -34,6 +40,12 @@ public class BookDetailActivity extends AppCompatActivity implements SharedPrefe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
+
+        this.isBookmarked = false;
+        this.viewModel = new ViewModelProvider(
+                this,
+                new ViewModelProvider.AndroidViewModelFactory(getApplication())
+        ).get(ReadingListViewModel.class);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_BOOK_DETAIL)) {
@@ -92,6 +104,22 @@ public class BookDetailActivity extends AppCompatActivity implements SharedPrefe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.book_detail, menu);
+        this.viewModel.getAllReadingListByName(this.book.title).observe(
+                this,
+                new Observer<BookDataItem>() {
+                    @Override
+                    public void onChanged(BookDataItem repo) {
+                        MenuItem menuItem = menu.findItem(R.id.action_bookmark);
+                        if (repo == null) {
+                            isBookmarked = false;
+                            menuItem.setIcon(R.drawable.ic_reading_list_border);
+                        } else {
+                            isBookmarked = true;
+                            menuItem.setIcon(R.drawable.ic_reading_list_checked);
+                        }
+                    }
+                }
+        );
         return true;
     }
 
@@ -99,17 +127,25 @@ public class BookDetailActivity extends AppCompatActivity implements SharedPrefe
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_share:
+                Log.d(TAG, "action share");
                 shareBook();
+                return true;
             case R.id.action_search_web:
                 searchBook();
+                return true;
+            case R.id.action_bookmark:
+                toggleRepoBookmark(item);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
 
+
     //intent for sharing to others
     private void shareBook() {
+        Log.d(TAG, "in shareBook");
         if (this.book != null) {
             String shareText = getString(
                     R.string.share_book_text,
@@ -124,6 +160,21 @@ public class BookDetailActivity extends AppCompatActivity implements SharedPrefe
             startActivity(chooserIntent);
         }
     }
+
+    private void toggleRepoBookmark(MenuItem menuItem) {
+        if (this.book != null) {
+            this.isBookmarked = !this.isBookmarked;
+            menuItem.setChecked(this.isBookmarked);
+            if (this.isBookmarked) {
+                menuItem.setIcon(R.drawable.ic_reading_list_checked);
+                this.viewModel.insertReadingList(this.book);
+            } else {
+                menuItem.setIcon(R.drawable.ic_reading_list_border);
+                this.viewModel.deleteReadingList(this.book);
+            }
+        }
+    }
+
 
     //intent for google searching
     private void searchBook(){

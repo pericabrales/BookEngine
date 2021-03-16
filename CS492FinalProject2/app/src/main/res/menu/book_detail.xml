@@ -3,6 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_bookmark"
+        android:title="@string/action_bookmark"
+        android:icon="@drawable/ic_reading_list_border"
+        android:checkable="true"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_share"
         android:title="@string/action_share_title"
         android:icon="@drawable/ic_action_share"

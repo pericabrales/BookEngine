@@ -13,4 +13,18 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.CS492FinalProject.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/header_bottom</item>
+        <item name="colorPrimaryVariant">@color/header_top</item>
+        <item name="colorOnPrimary">@color/app_background</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/search_color</item>
+        <item name="colorSecondaryVariant">@color/search_color2</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
 </resources>
