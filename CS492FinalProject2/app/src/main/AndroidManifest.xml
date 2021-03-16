@@ -3,7 +3,6 @@
     package="com.example.cs492finalproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
-        <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +20,10 @@
             android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name=".CameraActivity"
             android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name=".MainActivity"

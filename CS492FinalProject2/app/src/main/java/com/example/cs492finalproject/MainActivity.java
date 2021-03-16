@@ -198,6 +198,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.action_camera:
+                Intent camera_intent = new Intent(this, CameraActivity.class);
+                startActivity(camera_intent);
+                return true;
             case android.R.id.home:
                 this.drawerLayout.openDrawer(GravityCompat.START);
             default:
