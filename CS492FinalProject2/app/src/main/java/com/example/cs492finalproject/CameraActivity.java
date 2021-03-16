@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//help with camera access from: https://www.geeksforgeeks.org/android-how-to-open-camera-through-intent-and-display-captured-image/
 public class CameraActivity extends AppCompatActivity {
     private static final int pic_id = 111;
 
