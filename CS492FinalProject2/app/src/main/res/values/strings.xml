@@ -3,6 +3,9 @@
     <string name="loading_error">Unable to execute search.  Please check your internet connection.</string>
     <string name="search_action_error">The search could not be completed. Please check your search and try again</string>
 
+<!-- String for web button    -->
+    <string name="web_activity_button">More Info</string>
+
 <!-- titles for all intents   -->
     <string name="action_settings_title">Settings</string>
     <string name="action_share_title">Share</string>

@@ -43,5 +43,10 @@ public class BookDataItem implements Serializable {
     @SerializedName("author_name")
     @NonNull
     public ArrayList<String> auth;
+
+    @Ignore
+    @SerializedName("seed")
+    @NonNull
+    public ArrayList<String> ISBN;
 }
 

@@ -27,6 +27,15 @@
         android:textSize="25dp"
         android:textAppearance="?attr/textAppearanceBody1"/>
 
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:text="@string/web_activity_button"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:onClick="sendWebSearch"
+        />
+
     <ImageView
         android:layout_width="450dp"
         android:layout_height="450dp"

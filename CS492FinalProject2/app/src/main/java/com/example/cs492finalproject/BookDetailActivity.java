@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,6 +122,12 @@ public class BookDetailActivity extends AppCompatActivity implements SharedPrefe
                 }
         );
         return true;
+    }
+
+    public void sendWebSearch(View view){
+        Intent intent = new Intent(this, WebActivity.class);
+        intent.putExtra(WebActivity.EXTRA_WEB_INFO, book);
+        startActivity(intent);
     }
 
     @Override
