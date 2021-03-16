@@ -47,15 +47,15 @@ public class CameraActivity extends AppCompatActivity {
                 // Start the activity with camera_intent,
                 // and request pic id
                 startActivityForResult(camera_intent, pic_id);
+
             }
         });
     }
 
+
     // This method will help to retrieve the image
-    protected void onActivityResult(int requestCode,
-                                    int resultCode,
-                                    Intent data)
-    {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         // Match the request 'pic id with requestCode
         if (requestCode == pic_id) {
@@ -68,5 +68,7 @@ public class CameraActivity extends AppCompatActivity {
             // Set the image in imageview for display
             click_image_id.setImageBitmap(photo);
         }
+
+
     }
 }
