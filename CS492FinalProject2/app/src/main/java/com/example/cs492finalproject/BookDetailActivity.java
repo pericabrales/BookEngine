@@ -46,7 +46,7 @@ public class BookDetailActivity extends AppCompatActivity {
             bookPublishTV.setText("Publisher: " + book.publisher.get(0));
             bookSubjectTV.setText("Subject: " + book.subject.get(0));
             bookLanguageTV.setText("Language: " + book.language.get(0));
-            bookDateTV.setText("Published On: " + book.publishDate.get(0));
+            bookDateTV.setText("Published in " + book.publishDate.get(0));
         }
     }
 
