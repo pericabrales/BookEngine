@@ -8,4 +8,11 @@
         android:icon="@drawable/ic_action_settings"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_camera"
+        android:title="@string/action_camera_title"
+        android:icon="@drawable/ic_action_camera"
+        app:showAsAction="ifRoom" />
+
+
 </menu>

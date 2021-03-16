@@ -5,6 +5,7 @@
 
 <!-- titles for all intents   -->
     <string name="action_settings_title">Settings</string>
+    <string name="action_camera_title">Camera</string>
     <string name="action_share_title">Share</string>
     <string name="action_view_web_search_title">Search Book Online</string>
 
